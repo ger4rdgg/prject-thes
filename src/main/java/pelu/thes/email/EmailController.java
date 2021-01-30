@@ -21,11 +21,11 @@ public class EmailController {
     @Autowired
     EmailService emailService;
 
-    @GetMapping(value = "/simple-email/{user-email}")
-    public @ResponseBody ResponseEntity sendSimpleEmail(@PathVariable("user-email") String email) {
+    @GetMapping(value = "/simple-email")
+    public @ResponseBody ResponseEntity sendSimpleEmail() {
 
         try {
-            emailService.sendSimpleEmail(email, "Welcome", "This is a welcome email for your!!");
+            emailService.sendSimpleEmail("geriscc@gmail.com", "Welcome", "This is a welcome email for your!!");
         } catch (MailException mailException) {
             LOG.error("Error while sending out email..{}", mailException.getStackTrace());
             return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -34,12 +34,12 @@ public class EmailController {
         return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/simple-order-email/{user-email}")
-    public @ResponseBody ResponseEntity sendEmailAttachment(@PathVariable("user-email") String email) {
+    @GetMapping(value = "/order-email")
+    public @ResponseBody ResponseEntity sendEmailAttachment() {
 
         try {
-            emailService.sendEmailWithAttachment(email, "Order Confirmation", "Thanks for your recent order",
-                    "classpath:purchase_order.pdf");
+            emailService.sendEmailWithAttachment("geriscc@gmail.com", "Order Confirmation", "Thanks for your recent order",
+                    "classpath:attachment.txt");
         } catch (MessagingException | FileNotFoundException mailException) {
             LOG.error("Error while sending out email..{}", mailException.getStackTrace());
             return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
